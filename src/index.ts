@@ -5,7 +5,7 @@ import { connectDB } from "./database/db.js";
 
 const app = express();
 
-const port: number = 2000;
+const port: number = 8000;
 
 app.get("/", async (req: Request, res: Response) => {});
 
@@ -13,6 +13,7 @@ app.use(express.json());
 // app.use(blogAuth);
 
 app.get("/blog", blogRoutes);
+// app.put("blog")
 
 //Error Handler
 app.use(errorHandler);

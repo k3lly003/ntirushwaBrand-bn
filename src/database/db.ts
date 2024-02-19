@@ -1,16 +1,17 @@
-import { connect } from "mongoose";
+import { Mongoose, connect } from "mongoose";
 import dotenv from "dotenv";
-import { AppError } from "../middleware/error.middleware";
+import { errorHandler } from "../middleware/error.middleware";
 
 dotenv.config();
 
 export const connectDB = () => {
   try {
-    connect(process.env.MONGODB_URI as string, (error) => {
-      if (error) throw new AppError(500, "Something terrible happened");
+    Mongoose.connect(mongodb:localhost:27017, (error: any) => {
+      if (error) throw new errorHandler(500, "Something terrible happened");
       console.log("connected to database");
     });
-  } catch (error) {
-    throw new AppError(500, "Something terrible happened");
+  } catch (error: any) {
+    console.log("this is the error", error);
+    throw new errorHandler(500, "Something terrible happened");
   }
 };
