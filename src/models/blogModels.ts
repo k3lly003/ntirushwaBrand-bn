@@ -25,4 +25,4 @@ const BlogSchema = new Schema<Blog>(
   { timestamps: true }
 );
 
-export const blogs = model<Blog>("Blog", BlogSchema);
+export const Blogs = model<Blog>("Blog", BlogSchema);

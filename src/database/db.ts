@@ -1,17 +1,31 @@
-import { Mongoose, connect } from "mongoose";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { errorHandler } from "../middleware/error.middleware";
+import blogsRoutes from "../routes/BlogRoutes";
+// import { errorHandler } from "../middleware/error.middleware";
+import express, { Response, Request, NextFunction } from "express";
 
 dotenv.config();
+const app = express();
+const db = process.env.Mongo_URI;
+export const connectDB = async () => {
+  mongoose
+    .connect(db as string)
+    .then(() => {
+      app.use(express.json());
 
-export const connectDB = () => {
-  try {
-    Mongoose.connect(mongodb:localhost:27017, (error: any) => {
-      if (error) throw new errorHandler(500, "Something terrible happened");
-      console.log("connected to database");
+      app.use("/api", blogsRoutes);
+
+      app.use(function (
+        err: any,
+        req: Request,
+        res: Response,
+        next: NextFunction
+      ) {
+        res.status(err.status || 500);
+        res.json({ error: err });
+      });
+    })
+    .catch((err: Error) => {
+      console.log("something went wrong");
     });
-  } catch (error: any) {
-    console.log("this is the error", error);
-    throw new errorHandler(500, "Something terrible happened");
-  }
 };

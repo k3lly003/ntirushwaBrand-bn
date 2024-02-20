@@ -1,100 +1,68 @@
+import { Blogs } from "../models/blogModels";
+
 import { Request, Response } from "express";
-import { Blog, Comment } from "./src/models/blogModels";
-import { errorHandler } from "./src/middleware/error.middleware";
-// import errorHandler from "./src/middleware/error.middleware";
 
-// Create a new blog
 export const createBlog = async (req: Request, res: Response) => {
-  try {
-    const { title, content, author, image } = req.body;
+  const blog = new Blogs({
+    title: req.body.title,
+    image: req.body.image,
+    blogIntro: req.body.blogIntro,
+    likes: req.body.like,
+    content: req.body.content,
+  });
 
-    const newBlog = new Blog({ title, content, author, image });
-    await newBlog.save();
-    res
-      .status(201)
-      .json({ message: "Blog created successfully", data: newBlog });
-  } catch (err: any) {
-    // Handle errors using middleware or custom logic
-    console.log("here goes the error");
-    const error: any = new errorHandler(
-      500,
-      "Error creating blog",
-      error.message
-    );
-    next(error);
-  }
+  const newblog = await blog.save();
+  res.send(newblog);
 };
 
-// Get a specific blog
 export const readBlog = async (req: Request, res: Response) => {
-  try {
-    const blogId = req.params.id;
-    const blog = await Blog.findById(blogId)
-      .populate("comments")
-      .populate("likes"); // Assuming "likes" is defined in Blog model
+  const posts = await Blogs.find();
+  res.send(posts);
+};
 
-    if (!blog) {
-      throw new AppError(404, "Blog not found"); // Use middleware
-    }
-    res.status(200).json({ data: blog });
-  } catch (err) {
-    next(err); // Pass to error handler if using middleware
+export const singleBlog = async (req: Request, res: Response) => {
+  try {
+    const post = await Blogs.findOne({ _id: req.params.id });
+    res.send(post);
+  } catch {
+    res.status(404);
+    res.send({ error: "Post does not exist!" });
   }
 };
 
-// Update a blog
 export const updateBlog = async (req: Request, res: Response) => {
   try {
-    const blogId = req.params.id;
-    const { title, content, author, image } = req.body; // Adjust based on model properties
+    const post = await Blogs.findOne({ _id: req.params.id });
 
-    // Find the blog by ID
-    const blog = await Blog.findById(blogId);
+    if (post) {
+      if (req.body.title) {
+        post.title = req.body.title;
+      }
 
-    // Handle blog not found case
-    if (!blog) {
-      throw new AppError(404, "Blog not found"); // Use middleware
+      if (req.body.image) {
+        post.image = req.body.image;
+      }
+
+      if (req.body.content) {
+        post.content = req.body.content;
+      }
+
+      await post.save();
+      res.send(post);
     }
-
-    blog.title = title;
-    blog.content = content;
-    blog.author = author; // Assuming author can be updated
-    blog.image = image;
-    await blog.save();
-    res.status(200).json({ message: "Blog updated successfully", data: blog });
-  } catch (err) {
-    next(err); // Pass to error handler if using middleware
+  } catch {
+    res.status(404);
+    res.send({ error: "Content does not exist!" });
   }
 };
 
-// Delete a blog
 export const deleteBlog = async (req: Request, res: Response) => {
   try {
-    const blogId = req.params.id;
-    // Optional authentication/authorization checks here
-
-    // Find the blog by ID
-    const blog = await Blog.findById(blogId);
-
-    // Handle blog not found case
-    if (!blog) {
-      throw new AppError(404, "Blog not found"); // Use middleware
-    }
-
-    // Delete the blog
-    await blog.deleteOne();
-
-    // Send a success response
-    res.status(200).json({ message: "Blog deleted successfully" });
-  } catch (err) {
-    next(err); // Pass to error handler if using middleware
+    await Blogs.deleteOne({ _id: req.params.id });
+    res.status(204);
+    res.send({ message: "blog is deleted" });
+  } catch {
+    res.status(404);
+    res.send({ error: "The blog does not exist!" });
   }
-};
-
-// Create a new comment for a specific blog
-export const createComment = async (req: Request, res: Response) => {
-  try {
-    // Extract comment data from request body
-    const { text, author } = req.body;
-  } catch {}
 };
