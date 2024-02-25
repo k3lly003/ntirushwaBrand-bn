@@ -1,52 +1,33 @@
-import { Schema } from "mongoose";
+import { Types } from "mongoose";
 
 export interface Blog {
-  date?: Date;
+  author: Types.ObjectId;
   title: string;
   image: string;
   description: string;
   content: string;
-  // comments: Array<Comment>;
-  // likes: Array<Likes>;
+  comments: Types.ObjectId[];
+  likes: Types.ObjectId[];
+  createdAt: string;
+  updatedAt: string;
 }
 export interface User {
   name: string;
   email: string;
   role: string;
+  createdAt: string;
+  updatedAt: string;
 }
-// export interface Likes {
-//   blogId: string;
-//   userId: string;
-//   blogLike: boolean;
-// }
 export interface Comment {
   message: string;
-  author: string;
-  blogId: string;
+  author: Types.ObjectId;
+  blogId: Types.ObjectId;
+  createdAt: string;
+  updatedAt: string;
 }
-export interface Querry {
-  client_info: {
-    names: string;
-    email: string;
-    location: string;
-  };
-  client_budget: string;
-  client_message: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-export interface TOKENRESPONSE {
-  user: {
-    _id: Schema.Types.ObjectId;
-    email: string;
-    names: string;
-  };
-
-  expireIn: number;
-  iat: number;
-}
-export interface Client {
-  client_info: User & { location: string };
-  client_budget: string;
-  client_message: string;
+export interface Message {
+  email: string;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
 }

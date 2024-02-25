@@ -1,18 +1,19 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { Comment } from "../utils/types";
 
 const CommentSchema = new Schema<Comment>(
   {
     author: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
     },
     message: {
       type: String,
       required: true,
     },
     blogId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Blog",
     },
   },
   { timestamps: true }

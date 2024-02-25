@@ -1,10 +1,11 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { Blog } from "../utils/types";
 
 const BlogSchema = new Schema<Blog>(
   {
-    date: {
-      type: Date,
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
     },
     title: {
       type: String,
@@ -21,6 +22,18 @@ const BlogSchema = new Schema<Blog>(
       type: String,
       required: true,
     },
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+      },
+    ],
   },
   { timestamps: true }
 );

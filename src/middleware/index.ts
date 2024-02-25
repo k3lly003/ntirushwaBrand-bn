@@ -62,38 +62,38 @@ export const isExistTitle = async (
   }
 };
 
-export const isValidQuerry = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const data = {
-    client_info: req.body.client,
-    client_budget: req.body.budget,
-    client_message: req.body.message,
-  };
-  const valid = querriesValidation(data);
-  if (valid.error) {
-    const errors = valid.error;
-    res.status(400);
-    res.send({ error: errors?.details[0].message });
-  } else {
-    next();
-  }
-};
+// export const isValidQuerry = (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const data = {
+//     client_info: req.body.client,
+//     client_budget: req.body.budget,
+//     client_message: req.body.message,
+//   };
+//   const valid = querriesValidation(data);
+//   if (valid.error) {
+//     const errors = valid.error;
+//     res.status(400);
+//     res.send({ error: errors?.details[0].message });
+//   } else {
+//     next();
+//   }
+// };
 
-export const isValidComment = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const valid = validateComment(req.body);
-  if (valid.error) {
-    const errors = valid.error;
-    res.status(400);
-    res.send({ error: errors?.details[0].message });
-    //console.log(errors?.details[0].message)
-  } else {
-    next();
-  }
-};
+// export const isValidComment = (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const valid = validateComment(req.body);
+//   if (valid.error) {
+//     const errors = valid.error;
+//     res.status(400);
+//     res.send({ error: errors?.details[0].message });
+//     //console.log(errors?.details[0].message)
+//   } else {
+//     next();
+//   }
+// };
