@@ -18,12 +18,16 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
-export interface Comment {
+export interface CommentDoc {
   message: string;
   author: Types.ObjectId;
   blogId: Types.ObjectId;
   createdAt: string;
   updatedAt: string;
+}
+export interface like {
+  userId: Types.ObjectId;
+  blogId: Types.ObjectId;
 }
 export interface Message {
   email: string;

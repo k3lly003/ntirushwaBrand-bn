@@ -1,15 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
-import express, { Request, Response } from "express";
-import errorHandler from "./middleware/error.middleware";
 import mongoose from "mongoose";
-import { AuthRoutes } from "../src/routes/Auth";
-import { BlogRouter } from "./routes/BlogRoutes";
-
-const passport = require("passport");
-require("../passport-config")(passport);
-
-const app = express();
+import app from "./app";
 
 const port: number = 8000;
 
@@ -21,19 +13,6 @@ mongoose
   .connect(mongo_uri)
   .then(() => console.log("connected to Database"))
   .catch((e) => console.log(e));
-
-app.use(express.json());
-
-//Route for auth
-app.use("/api/auth", AuthRoutes);
-
-//Routes for creating blogs
-app.use("api/blog", BlogRouter);
-
-//Route for querry
-// app.use("api/message");
-
-app.use(errorHandler);
 
 app.listen(port, () => {
   console.log("server running " + port);

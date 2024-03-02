@@ -4,6 +4,8 @@
     "module": "commonjs",
     "outDir": "./dist",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "types": ["node", "mongoose", "jest"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]

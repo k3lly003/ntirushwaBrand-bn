@@ -1,7 +1,7 @@
 import mongoose, { Schema, model } from "mongoose";
-import { Comment } from "../utils/types";
+import { CommentDoc } from "../utils/types";
 
-const CommentSchema = new Schema<Comment>(
+const CommentSchema = new Schema<CommentDoc>(
   {
     author: {
       type: mongoose.Schema.Types.ObjectId,
@@ -19,4 +19,4 @@ const CommentSchema = new Schema<Comment>(
   { timestamps: true }
 );
 
-export const BlogComment = model<Comment>("userComment", CommentSchema);
+export const Comment = model<CommentDoc>("Comment", CommentSchema);

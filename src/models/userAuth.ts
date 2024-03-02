@@ -31,7 +31,7 @@ const userSchema = new Schema<User>(
     },
     userType: {
       type: String,
-      default: "user",
+      default: "admin",
     },
   },
   { timestamps: true }

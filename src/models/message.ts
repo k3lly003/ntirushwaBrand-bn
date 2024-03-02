@@ -15,4 +15,4 @@ const messageSchema = new Schema<Message>(
   { timestamps: true }
 );
 
-export const BlogComment = model<Message>("Message", messageSchema);
+export const message = model<Message>("Message", messageSchema);

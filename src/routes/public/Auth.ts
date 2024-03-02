@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 const Router = express.Router();
 import Joi from "joi";
 import jwt from "jsonwebtoken";
-import { IUser } from "../models/userAuth";
+import { IUser } from "../../models/userAuth";
 
 const signUpSchema = Joi.object({
   firstName: Joi.string().alphanum().min(3).max(10).required(),
@@ -26,10 +26,13 @@ const signInSchema = Joi.object({
 });
 
 Router.post("/signup", async (req: Request, res: Response, next) => {
+  console.log("this is req.body on line 29", req.body);
   const { error, value } = signUpSchema.validate(req.body);
+
   if (error) return res.status(400).json({ error: error.details[0].message });
   // User is validated and saved to the database here
   const { firstName, secondName, password } = req.body;
+  console.log("first");
   const existingUser = await IUser.find({ email: req.body.email }).select(
     "-password"
   );

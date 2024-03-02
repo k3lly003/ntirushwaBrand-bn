@@ -60,15 +60,5 @@
 //     blogId: req.params.id,
 //     blogLike: true,
 //   });
-//   const TotalDislike = await blogLike.countDocuments({
-//     blogId: req.params.id,
-//     blogLike: false,
-//   });
-//   res.status(200);
-//   res.send({
-//     Total_like: TotalLike,
-//     dislike: TotalDislike,
-//   });
-// };
 
 // export { createNewLike, getLikeStatus };

@@ -1,18 +1,55 @@
 import { Blogs } from "../models/blogModels";
 
-import { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
+import { uploadFiles, dataUri } from "../services/services";
+import { error } from "console";
 
-export const createBlog = async (req: Request, res: Response) => {
-  const blog = new Blogs({
-    title: req.body.title,
-    image: req.body.image,
-    blogIntro: req.body.blogIntro,
-    likes: req.body.like,
-    content: req.body.content,
-  });
+declare global {
+  namespace Express {
+    interface Request {
+      files?: [];
+    }
+  }
+}
 
-  const newblog = await blog.save();
-  res.send(newblog);
+export const createBlog = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log("This is the userId", req.userId);
+    const blog = await Blogs.create({
+      author: req.userId,
+      title: req.body.title,
+      description: req.body.description,
+      content: req.body.content,
+    });
+    if ("image" in req.files!) {
+      const uploadedBlogImage = req.files.image[0];
+      const base64image = dataUri(uploadedBlogImage);
+      const cloudImg = await uploadFiles(
+        base64image.content,
+        { folder: "blogImages" },
+        function (err, result) {
+          if (err) {
+            console.log("this is Cloudinary error", err);
+            return res.json(err);
+          }
+          console.log("this is Cloudinary result", result);
+          return result;
+        }
+      );
+      blog.image = cloudImg.url;
+    } else {
+      return res.status(400).json({ msg: "You must have an image" });
+    }
+    await blog.save();
+    res.status(201).json({ msg: "Blog created successfully", blog });
+  } catch (error) {
+    console.log("this is error from create blog", error);
+    return next({ error });
+  }
 };
 
 export const readBlog = async (req: Request, res: Response) => {
@@ -22,7 +59,10 @@ export const readBlog = async (req: Request, res: Response) => {
 
 export const singleBlog = async (req: Request, res: Response) => {
   try {
-    const post = await Blogs.findOne({ _id: req.params.id });
+    const post = await Blogs.findById(req.params.blog_id).populate(
+      "author",
+      "first_name second_name "
+    );
     res.send(post);
   } catch {
     res.status(404);
@@ -30,22 +70,62 @@ export const singleBlog = async (req: Request, res: Response) => {
   }
 };
 
+//Like Blog
+export const handleLikeBlog = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log("this is req.userId", req.userId);
+  try {
+    const foundBlog = await Blogs.findById(req.params.blog_id);
+    const check = foundBlog!.likes.includes(req.userId!);
+    if (check) {
+      var index = foundBlog!.likes.indexOf(req.userId!);
+      if (index >= 0) {
+        foundBlog!.likes.splice(index, 1);
+      }
+    } else {
+      foundBlog!.likes.push(req.userId!);
+    }
+    await foundBlog!.save();
+    return res
+      .status(200)
+      .json({ status: 200, blog: foundBlog, msg: "Blog Updated successfully" });
+  } catch (err) {
+    return next({ err });
+  }
+};
+
+//end of like blog
+
 export const updateBlog = async (req: Request, res: Response) => {
   try {
-    const post = await Blogs.findOne({ _id: req.params.id });
+    const post = await Blogs.findOne({ _id: req.params.blog_id });
 
     if (post) {
-      if (req.body.title) {
-        post.title = req.body.title;
+      if ("image" in req.files!) {
+        const uploadedBlogImage = req.files.image[0];
+        const base64image = dataUri(uploadedBlogImage);
+        const cloudImg = await uploadFiles(
+          base64image.content,
+          { folder: "blogImages" },
+          function (err, result) {
+            if (err) {
+              console.log("this is Cloudinary error", err);
+              return res.json(err);
+            }
+            console.log("this is Cloudinary result", result);
+            return result;
+          }
+        );
+        post.image = cloudImg.url;
+      } else {
+        return res.status(400).json({ msg: "You must have an image" });
       }
-
-      if (req.body.image) {
-        post.image = req.body.image;
-      }
-
-      if (req.body.content) {
-        post.content = req.body.content;
-      }
+      post.title = req.body.title;
+      post.description = req.body.description;
+      post.content = req.body.content;
 
       await post.save();
       res.send(post);

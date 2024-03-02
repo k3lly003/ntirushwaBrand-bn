@@ -7,7 +7,7 @@ const ExtractJWT = require("passport-jwt").ExtractJwt;
 import { IUser } from "../models/userAuth";
 
 import { Request, Response } from "express";
-import { TOKENRESPONSE } from "../utils/types";
+// import { TOKENRESPONSE } from "../utils/types";
 
 dotenv.config();
 
@@ -21,10 +21,11 @@ passport.use(
     },
     async (req: Request, email, password, done: any) => {
       try {
+        console.log("second", req.body);
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);
 
-        let names = req.body.names;
+        let names = req.params.names;
         let user = await new IUser({
           names,
           email,
@@ -76,16 +77,16 @@ const jwtOptions = {
   secretOrKey: process.env.JWT_SECRET,
 };
 
-passport.use(
-  new JWTstrategy(jwtOptions, async (token: TOKENRESPONSE, done: any) => {
-    try {
-      console.log(process.env.JWT_SECRET);
-      return done(null, token.user);
-    } catch (error) {
-      done(error);
-    }
-  })
-);
+// passport.use(
+//   new JWTstrategy(jwtOptions, async (token: TOKENRESPONSE, done: any) => {
+//     try {
+//       console.log(process.env.JWT_SECRET);
+//       return done(null, token.user);
+//     } catch (error) {
+//       done(error);
+//     }
+//   })
+// );
 
 const userPassport = passport;
 
