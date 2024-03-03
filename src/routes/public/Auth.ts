@@ -64,7 +64,7 @@ Router.post("/signin", async (req: Request, res: Response, next) => {
     console.log("this is the found user", foundUser);
     if (!foundUser.length) {
       return res
-        .status(401)
+        .status(404)
         .json({ msg: "Invalid Email /password combination!" });
     }
 
@@ -76,7 +76,7 @@ Router.post("/signin", async (req: Request, res: Response, next) => {
     // Assign JWT Token
     if (!isMatch) {
       return res
-        .status(401)
+        .status(403)
         .json({ msg: "Invalid Email /password combination!" });
     }
     const { id, userType, email } = user;

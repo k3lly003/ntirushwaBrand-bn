@@ -3,7 +3,7 @@ import { Blogs } from "../models/blogModels";
 
 import { blogValidation } from "../validation/validation";
 
-console.log("My middleware has a problem");
+// console.log("My middleware has a problem");
 
 export const isExistBlog = async (
   req: Request,

@@ -4,9 +4,11 @@ import {
   readMessage,
   deleteMessage,
 } from "../../controllers/message";
+import { validateMessage } from "../../validation/validation";
+
 const MessageRouter = express.Router({ mergeParams: true });
 
-MessageRouter.post("/create", createMessage);
+MessageRouter.post("/create", validateMessage, createMessage);
 MessageRouter.get("/read", readMessage);
 MessageRouter.delete("/:message_id/delete", deleteMessage);
 

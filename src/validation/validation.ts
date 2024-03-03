@@ -23,11 +23,10 @@ export const validateMessage = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("nonononononon", req.body);
   const { error, value } = messageValidationSChema.validate(req.body);
   if (error)
     return res
-      .status(401)
+      .status(400)
       .json({ msg: "Your message is not validated", error });
   next();
 };
@@ -44,6 +43,6 @@ export const validateComment = async (
   next: NextFunction
 ) => {
   const { error, value } = commentSchema.validate(req.body);
-  if (error) return res.send(error);
+  if (error) return res.status(400).json({ msg: "must be valid" });
   next();
 };

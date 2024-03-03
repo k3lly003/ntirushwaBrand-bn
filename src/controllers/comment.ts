@@ -45,7 +45,7 @@ export const createComment = async (req: Request, res: Response) => {
 export const readComment = async (req: Request, res: Response) => {
   console.log(req.params.id);
   try {
-    const post = await Comment.find({ blogId: req.params.id });
+    const post = await Comment.find({ blogId: req.params.blog_id });
     res.send(post);
   } catch {
     res.status(404);

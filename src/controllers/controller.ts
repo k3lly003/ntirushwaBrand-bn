@@ -18,7 +18,6 @@ export const createBlog = async (
   next: NextFunction
 ) => {
   try {
-    console.log("This is the userId", req.userId);
     const blog = await Blogs.create({
       author: req.userId,
       title: req.body.title,
@@ -76,7 +75,6 @@ export const handleLikeBlog = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("this is req.userId", req.userId);
   try {
     const foundBlog = await Blogs.findById(req.params.blog_id);
     const check = foundBlog!.likes.includes(req.userId!);

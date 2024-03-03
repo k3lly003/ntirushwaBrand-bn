@@ -38,10 +38,10 @@
             "name": "body",
             "schema": {
               "example": {
-                "firstName": "",
-                "secondName": "",
-                "email": "",
-                "password": ""
+                "firstName": "Joshua",
+                "secondName": "Mutabazi",
+                "email": "josh@gmail.com",
+                "password": "mutama333"
               },
               "required": true
             }
@@ -65,8 +65,8 @@
             "name": "body",
             "schema": {
               "example": {
-                "email": "",
-                "password": ""
+                "email": "josh@gmail.com",
+                "password": "mutama333"
               },
               "required": true
             }
@@ -132,7 +132,9 @@
             "description": "Blog created"
           }
         }
-      },
+      }
+    },
+    "/api/blogs/read/all": {
       "get": {
         "summary": "Get all blogs",
         "description": "This endpoint is used to get all blogs",
@@ -148,7 +150,7 @@
       }
     },
 
-    "/api/blogs/{blogId}": {
+    "/api/blogs/{blogId}/read": {
       "get": {
         "summary": "Get a single blog by ID",
         "description": "This endpoint is used to get a single blog by its ID",
@@ -258,7 +260,7 @@
         }
       }
     },
-    "/api/message/create": {
+    "/api/messages/create": {
       "post": {
         "summary": "Create a new message",
         "description": "This endpoint is used to create a new message",
@@ -269,8 +271,8 @@
             "name": "body",
             "schema": {
               "example": {
-                "email": "",
-                "text": ""
+                "email": "ntiru@gmail.com",
+                "text": "Hey buy"
               },
               "required": true
             }
