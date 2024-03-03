@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1709483483939" clover="3.2.0">
-  <project timestamp="1709483483939" name="All files">
+<coverage generated="1709484071666" clover="3.2.0">
+  <project timestamp="1709484071667" name="All files">
     <metrics statements="362" coveredstatements="250" conditionals="34" coveredconditionals="14" methods="55" coveredmethods="34" elements="451" coveredelements="298" complexity="0" loc="362" ncloc="362" packages="9" files="20" classes="20"/>
     <package name="ntirushwaBrand-bn">
       <metrics statements="11" coveredstatements="10" conditionals="1" coveredconditionals="1" methods="3" coveredmethods="3"/>
