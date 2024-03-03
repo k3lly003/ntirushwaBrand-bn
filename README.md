@@ -25,3 +25,7 @@
 - LinkedIn :
 
 # Available APIs
+
+# COVERAGE
+
+[![Coverage Status](https://coveralls.io/repos/github/k3lly003/ntirushwaBrand-bn/badge.svg?branch=main)](https://coveralls.io/github/k3lly003/ntirushwaBrand-bn?branch=main)

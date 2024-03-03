@@ -2,10 +2,9 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 import { IUser } from "./src/models/userAuth";
 
-let SECRET: any = "ntirukelly";
-const opts: any = {
+const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: SECRET,
+  secretOrKey: process.env.JWT_SECRET,
 };
 
 module.exports = (passport) => {
