@@ -33,7 +33,7 @@ export const createBlog = async (
         function (err, result) {
           if (err) {
             console.log("this is Cloudinary error", err);
-            return res.json(err);
+            return res.json({ msg: "DEBUGIIIII", err });
           }
           console.log("this is Cloudinary result", result);
           return result;
@@ -136,7 +136,7 @@ export const updateBlog = async (req: Request, res: Response) => {
 
 export const deleteBlog = async (req: Request, res: Response) => {
   try {
-    await Blogs.deleteOne({ _id: req.params.id });
+    await Blogs.deleteOne({ _id: req.params.blog_id });
     res.status(204);
     res.send({ message: "blog is deleted" });
   } catch {

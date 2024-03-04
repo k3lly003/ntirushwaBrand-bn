@@ -1,5 +1,15 @@
 {
   "swagger": "2.0",
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter your bearer token in the format **Bearer <token>**"
+    }
+  },
+  "security": [{ "Bearer": [] }],
+
   "info": {
     "title": "ntirushwaBrand's APIs",
     "description": "This is ntirushwabrand's swagger documentation",
@@ -7,6 +17,52 @@
   },
   "host": "localhost:8000",
   "basepath": "",
+
+  "$schema": {
+    "Blog": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "atleast 20 characters"
+        },
+        "image": {
+          "type": "string",
+          "format": "binary"
+        },
+        "description": {
+          "type": "string",
+          "description": "atleast 5 characters as minimun"
+        },
+        "content": {
+          "type": "string",
+          "description": "atleast 10 minimun characters "
+        }
+      }
+    },
+
+    "BlogUpdate": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "atleast 20 characters"
+        },
+        "image": {
+          "type": "string",
+          "format": "binary"
+        },
+        "blogIntro": {
+          "type": "string",
+          "description": "atleast 50 characters as minimun"
+        },
+        "content": {
+          "type": "string",
+          "description": "atleast 300 minimun characters "
+        }
+      }
+    }
+  },
   "tags": [
     {
       "name": "Auth",
@@ -89,10 +145,17 @@
         "tags": ["Blogs"],
         "security": [
           {
-            "BearerAuth": []
+            "Bearer": []
           }
         ],
         "parameters": [
+          {
+            "in": "formData",
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Title for the blog"
+          },
           {
             "in": "formData",
             "name": "image",
@@ -101,30 +164,18 @@
             "description": "Image file for the blog"
           },
           {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "author": {
-                  "type": "string",
-                  "example": ""
-                },
-                "title": {
-                  "type": "string",
-                  "example": ""
-                },
-                "description": {
-                  "type": "string",
-                  "example": ""
-                },
-                "content": {
-                  "type": "string",
-                  "example": ""
-                }
-              },
-              "required": ["author", "title", "description", "content"]
-            }
+            "in": "formData",
+            "name": "description",
+            "type": "string",
+            "required": true,
+            "description": "description for the blog"
+          },
+          {
+            "in": "formData",
+            "name": "content",
+            "type": "string",
+            "required": true,
+            "description": "Content for the blog"
           }
         ],
         "responses": {
@@ -149,39 +200,14 @@
         }
       }
     },
-
-    "/api/blogs/{blogId}/read": {
-      "get": {
-        "summary": "Get a single blog by ID",
-        "description": "This endpoint is used to get a single blog by its ID",
-        "tags": ["Blogs"],
-        "parameters": [
-          {
-            "name": "blogId",
-            "in": "path",
-            "description": "ID of the blog to retrieve",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response"
-          },
-          "404": {
-            "description": "Blog not found"
-          }
-        }
-      },
-      "put": {
+    "/api/blogs/{blogId}/update": {
+      "patch": {
         "summary": "Update a blog by ID",
         "description": "This endpoint is used to update a single blog by its ID",
         "tags": ["Blogs"],
         "security": [
           {
-            "BearerAuth": []
+            "Bearer": []
           }
         ],
         "parameters": [
@@ -193,6 +219,34 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "formData",
+            "name": "title",
+            "type": "string",
+            "required": false,
+            "description": "Title for the blog"
+          },
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "required": false,
+            "description": "Image file for the blog"
+          },
+          {
+            "in": "formData",
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "description": "description for the blog"
+          },
+          {
+            "in": "formData",
+            "name": "content",
+            "type": "string",
+            "required": false,
+            "description": "Content for the blog"
           }
         ],
         "requestBody": {
@@ -229,19 +283,48 @@
             "description": "Blog not found"
           }
         }
-      },
+      }
+    },
+
+    "/api/blogs/{blogId}/read": {
+      "get": {
+        "summary": "Get a single blog by ID",
+        "description": "This endpoint is used to get a single blog by its ID",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "blogId",
+            "in": "path",
+            "description": "ID of the blog to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "404": {
+            "description": "Blog not found"
+          }
+        }
+      }
+    },
+    "/api/blogs/{blogId}/delete": {
       "delete": {
         "summary": "Delete a blog by ID",
         "description": "This endpoint is used to delete a single blog by its ID",
         "tags": ["Blogs"],
         "security": [
           {
-            "BearerAuth": []
+            "Bearer": []
           }
         ],
         "parameters": [
           {
-            "name": "blogId",
+            "name": "blog_id",
             "in": "path",
             "description": "ID of the blog to delete",
             "required": true,
@@ -292,7 +375,7 @@
         "tags": ["Messages"],
         "security": [
           {
-            "BearerAuth": []
+            "Bearer": []
           }
         ],
         "responses": {
@@ -319,7 +402,7 @@
         "tags": ["Comments"],
         "security": [
           {
-            "BearerAuth": []
+            "Bearer": []
           }
         ],
         "requestBody": {
@@ -355,7 +438,7 @@
         "tags": ["Comments"],
         "security": [
           {
-            "BearerAuth": []
+            "Bearer": []
           }
         ],
         "parameters": [
@@ -400,7 +483,7 @@
         "tags": ["Comments"],
         "security": [
           {
-            "BearerAuth": []
+            "Bearer": []
           }
         ],
         "parameters": [
@@ -431,7 +514,7 @@
         "tags": ["Likes"],
         "security": [
           {
-            "BearerAuth": []
+            "Bearer": []
           }
         ],
         "parameters": [
@@ -462,7 +545,7 @@
         "tags": ["Likes"],
         "security": [
           {
-            "BearerAuth": []
+            "Bearer": []
           }
         ],
         "parameters": [
@@ -489,7 +572,7 @@
   },
   "components": {
     "securitySchemes": {
-      "BearerAuth": {
+      "Bearer": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
