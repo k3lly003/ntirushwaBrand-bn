@@ -12,7 +12,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.11.20",
     "@types/nodemon": "^1.19.6",
-    "bcrypt": "^5.0.1",
+    "bcrypt": "^5.1.1",
     "cloudinary": "^2.0.1",
     "cors": "^2.8.5",
     "datauri": "^4.1.0",
