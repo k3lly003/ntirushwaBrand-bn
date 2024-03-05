@@ -3,17 +3,25 @@ dotenv.config();
 import mongoose from "mongoose";
 import app from "./app";
 
-const port: number = 8000;
+const port = process.env.PORT || 8000;
 
-const mongo_uri = process.env.MONGO_URI as string;
-console.log("this is my mongo_uri ", mongo_uri);
-mongoose.set("debug", true);
-mongoose.Promise = Promise;
-mongoose
-  .connect(mongo_uri)
-  .then(() => console.log("connected to Database"))
-  .catch((e) => console.log(e));
+const start = async () => {
+  console.log("starting.....");
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT env must be created");
+  }
+  if (!process.env.MONGO_URI) {
+    throw new Error("MONGO_URI env must be created");
+  }
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("CONNECTED TO DATABASE");
+  } catch (err) {
+    console.log("this is mongodb error", err);
+  }
+};
 
 app.listen(port, () => {
-  console.log("server running " + port);
+  console.log(`LISTENING ON PORT ${port}`);
 });
+start();
