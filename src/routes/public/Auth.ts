@@ -26,17 +26,16 @@ const signInSchema = Joi.object({
 });
 
 Router.post("/signup", async (req: Request, res: Response, next) => {
-  console.log("this is req.body on line 29", req.body);
   const { error, value } = signUpSchema.validate(req.body);
 
   if (error) return res.status(400).json({ error: error.details[0].message });
   // User is validated and saved to the database here
   const { firstName, secondName, password } = req.body;
-  console.log("first");
+  ("first");
   const existingUser = await IUser.find({ email: req.body.email }).select(
     "-password"
   );
-  console.log(existingUser);
+  (existingUser);
   if (!existingUser.length) {
     const newUser = await IUser.create({
       first_name: firstName,
@@ -47,7 +46,7 @@ Router.post("/signup", async (req: Request, res: Response, next) => {
     newUser.save();
     const { id, userType, email } = newUser;
     const token = jwt.sign({ id, userType, email }, process.env.JWT_SECRET);
-    console.log(token);
+    (token);
     return res.status(201).json({ msg: "account created successfully", token });
   }
   return res.status(400).json({ msg: "Email already in use" });
@@ -61,18 +60,14 @@ Router.post("/signin", async (req: Request, res: Response, next) => {
   try {
     // Find use by email
     const foundUser = await IUser.find({ email: req.body.email });
-    console.log("this is the found user", foundUser);
     if (!foundUser.length) {
       return res
         .status(404)
         .json({ msg: "Invalid Email /password combination!" });
     }
-
     const user = foundUser[0];
-    console.log("this is req.body.pass", req.body.password);
     // Check if password match
     let isMatch = await user.comparePassword(req.body.password);
-    console.log("this is match", isMatch);
     // Assign JWT Token
     if (!isMatch) {
       return res

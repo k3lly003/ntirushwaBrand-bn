@@ -47,7 +47,7 @@ describe("MY BRAND TEST", () => {
           password: "12345",
         })
         .expect(404);
-      console.log(token);
+      (token);
     });
     //PASSWORD FAIL
     it("LOGIN FAILED, IT SHOULD RETURN 403", async () => {
@@ -58,7 +58,7 @@ describe("MY BRAND TEST", () => {
           password: "1234567879",
         })
         .expect(403);
-      console.log(token);
+      (token);
     });
     //INVALID LOGIN
     it("LOGIN VALIDATION FAIL, IT SHOULD RETURN 400", async () => {
@@ -105,7 +105,6 @@ describe("MY BRAND TEST", () => {
           email: randomText + "lava@gmail.com",
         })
         .expect(201);
-      console.log("TOKEN AT LINE 257 ", token);
     });
   });
   describe("BLOG", () => {
@@ -126,8 +125,6 @@ describe("MY BRAND TEST", () => {
           content: "LOREM IPSUM",
         })
         .expect(401);
-      console.log("TOKEN AT LINE 276", token);
-      console.log("BLOG AT LINE 277", blog);
     });
     // it("BLOG SUCCESFUL", async () => {
     //   const pic = `${__dirname}/pic/amall-pic.jpg`;

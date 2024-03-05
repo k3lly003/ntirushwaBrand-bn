@@ -58,7 +58,7 @@ passport.use(
           return done(null, false, { message: "User not found" });
         }
 
-        const validate = await bcrypt.compare(password, user.password);
+        const validate = await user.comparePassword(password);
 
         if (!validate) {
           return done(null, false, { message: "Wrong Password" });
