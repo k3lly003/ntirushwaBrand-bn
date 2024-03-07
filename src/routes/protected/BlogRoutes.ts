@@ -20,7 +20,7 @@ const upload = multer({
 });
 
 BlogRouter.post(
-  "/create",
+  "/",
   upload.fields([{ name: "image", maxCount: 1 }]),
   passport.authenticate("jwt", { session: false }),
   isValidBlog,
@@ -29,7 +29,7 @@ BlogRouter.post(
 );
 
 BlogRouter.patch(
-  "/:blog_id/update",
+  "/:blog_id",
   upload.fields([{ name: "image", maxCount: 1 }]),
   passport.authenticate("jwt", { session: false }),
   checkIsUserAdmin,
@@ -43,7 +43,7 @@ BlogRouter.patch(
 );
 
 BlogRouter.delete(
-  "/:blog_id/delete",
+  "/:blog_id",
   passport.authenticate("jwt", { session: false }),
   checkIsUserAdmin,
   deleteBlog

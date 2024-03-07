@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
 import { Comment } from "../models/commentModel";
 import { Blogs } from "../models/blogModels";
@@ -42,24 +42,25 @@ export const createComment = async (req: Request, res: Response) => {
   }
 };
 
-export const readComment = async (req: Request, res: Response) => {
-  console.log(req.params.id);
-  try {
-    const post = await Comment.find({ blogId: req.params.blog_id });
-    res.send(post);
-  } catch {
-    res.status(404);
-    res.send({ error: "Post doesn't exist!" });
-  }
-};
-
-export const singleComment = async (req: Request, res: Response) => {
+export const updateComment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   console.log(req.params.comment_id);
   try {
-    const comment = await Comment.findOne({ _id: req.params.comment_id });
-    res.send(comment);
-  } catch {
-    res.status(404);
-    res.send({ error: "Post doesn't exist!" });
+    const post = await Comment.findById(req.params.comment_id);
+    if (!post && post.author != req.userId) {
+      return res
+        .status(404)
+        .send({ msg: "You are not the owner of this Post" });
+    }
+    post.message = req.body.message;
+    await post.save();
+    return res
+      .status(200)
+      .json({ msg: "Post has been updated successfully", comment: post });
+  } catch (error) {
+    return next(error);
   }
 };

@@ -35,7 +35,7 @@ Router.post("/signup", async (req: Request, res: Response, next) => {
   const existingUser = await IUser.find({ email: req.body.email }).select(
     "-password"
   );
-  (existingUser);
+  existingUser;
   if (!existingUser.length) {
     const newUser = await IUser.create({
       first_name: firstName,
@@ -46,7 +46,7 @@ Router.post("/signup", async (req: Request, res: Response, next) => {
     newUser.save();
     const { id, userType, email } = newUser;
     const token = jwt.sign({ id, userType, email }, process.env.JWT_SECRET);
-    (token);
+    token;
     return res.status(201).json({ msg: "account created successfully", token });
   }
   return res.status(400).json({ msg: "Email already in use" });
@@ -58,7 +58,7 @@ Router.post("/signin", async (req: Request, res: Response, next) => {
   const userEmail = value.email as string;
 
   try {
-    // Find use by email
+    // FIND USER BY EMAIL
     const foundUser = await IUser.find({ email: req.body.email });
     if (!foundUser.length) {
       return res
@@ -66,9 +66,9 @@ Router.post("/signin", async (req: Request, res: Response, next) => {
         .json({ msg: "Invalid Email /password combination!" });
     }
     const user = foundUser[0];
-    // Check if password match
+    // CHECK IF PASSWORD MATCH
     let isMatch = await user.comparePassword(req.body.password);
-    // Assign JWT Token
+    // Assign JWT Token NOW
     if (!isMatch) {
       return res
         .status(403)
