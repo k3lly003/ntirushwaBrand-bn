@@ -14,6 +14,7 @@ export const blogValidation = (blogs: Blog) => {
 };
 //Define Validate schema for messages
 const messageValidationSChema = Joi.object({
+  name: Joi.string().min(3).required(),
   email: Joi.string().email().required(),
   text: Joi.string().min(5).required(),
 });

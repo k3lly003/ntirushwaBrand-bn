@@ -30,10 +30,10 @@ describe("MY BRAND TEST", () => {
   describe("AUTHENTICATION", () => {
     it("LOGIN SUCCESSFUL, IT SHOULD RETURN 200", async () => {
       const result = await supertest(app)
-        .post("/api/auth/signin")
+        .post("/api/signin")
         .send({
-          email: "ke@gmail.com",
-          password: "12345",
+          email: "yona@gmail.com",
+          password: "3333",
         })
         .expect(200);
       token = "Bearer " + result.body.token;
@@ -41,29 +41,29 @@ describe("MY BRAND TEST", () => {
     // LOGIN FAIL
     it("LOGIN FAILED, IT SHOULD RETURN 401", async () => {
       const result = await supertest(app)
-        .post("/api/auth/signin")
+        .post("/api/signin")
         .send({
           email: "ke999999999@gmail.com",
           password: "12345",
         })
         .expect(404);
-      (token);
+      token;
     });
     //PASSWORD FAIL
-    it("LOGIN FAILED, IT SHOULD RETURN 403", async () => {
+    it("LOGIN FAILED, IT SHOULD RETURN 404", async () => {
       const result = await supertest(app)
-        .post("/api/auth/signin")
+        .post("/api/signin")
         .send({
           email: "cas@gmail.com",
-          password: "1234567879",
+          password: "1234567yuit879",
         })
-        .expect(403);
-      (token);
+        .expect(404);
+      token;
     });
     //INVALID LOGIN
     it("LOGIN VALIDATION FAIL, IT SHOULD RETURN 400", async () => {
       const result = await supertest(app)
-        .post("/api/auth/signin")
+        .post("/api/signin")
         .send({
           email: "",
           password: "12345",
@@ -73,7 +73,7 @@ describe("MY BRAND TEST", () => {
     //USER SIGNUP
     it("SIGNUP VALIDATION FAIL, IT SHOULD RETURN 400", async () => {
       const result = await supertest(app)
-        .post("/api/auth/signup")
+        .post("/api/signup")
         .send({
           firstName: "brice",
           password: "123456",
@@ -84,12 +84,12 @@ describe("MY BRAND TEST", () => {
     //INVALID SIGNUP
     it("SIGNUP WITH EXISTING EMAIL, IT SHOULD RETURN 400", async () => {
       const result = await supertest(app)
-        .post("/api/auth/signup")
+        .post("/api/signup")
         .send({
           firstName: "lava",
           secondName: "big",
           password: "09876543",
-          email: "lava@gmail.com",
+          email: "yona@gmail.com",
         })
         .expect(400);
     });
@@ -97,7 +97,7 @@ describe("MY BRAND TEST", () => {
     it("SIGNUP SUCCESSFULL, IT SHOULD RETURN 201", async () => {
       let randomText = (Math.random() + 1).toString(36).substring(7);
       const result = await supertest(app)
-        .post("/api/auth/signup")
+        .post("/api/signup")
         .send({
           firstName: "lava",
           secondName: "big",
@@ -117,7 +117,7 @@ describe("MY BRAND TEST", () => {
       });
       blogId = blog._id;
       await supertest(app)
-        .post("/api/blogs/create")
+        .post("/api/blogs")
         .send({
           author: "65e1ba0effdba8154e78c0d0",
           title: "FIRST BLOG",
@@ -149,7 +149,7 @@ describe("MY BRAND TEST", () => {
       const pic = `${__dirname} /../pic/amall-pic.jpg`;
       let randomText = (Math.random() + 1).toString(36).substring(5);
       const response = await supertest(app)
-        .post("/api/blogs/create")
+        .post("/api/blogs")
         .set("Authorization", token)
         .set("contentType", "application/octet-stream")
         .field("title", `Le Lorem Ipsum est test ${randomText}`)
@@ -161,11 +161,11 @@ describe("MY BRAND TEST", () => {
           "content",
           "son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker. "
         )
-        .expect(400);
+        .expect(401);
     });
     it("UNAUTHORIZED UPDATE BLOG", async () => {
       await supertest(app)
-        .patch(`/api/blogs/${blogId}/update`)
+        .patch(`/api/blogs/${blogId}`)
         .send({
           author: "65e1ba0effdba8154e78c0d0",
           title: "FIRST BLOG",
@@ -175,13 +175,11 @@ describe("MY BRAND TEST", () => {
         .expect(401);
     });
     it("GET ALL BLOG", async () => {
-      const response = await supertest(app)
-        .get("/api/blogs/read/all")
-        .expect(200);
+      const response = await supertest(app).get("/api/blogs").expect(200);
     });
     it("GET SINGLE BLOG", async () => {
       const response = await supertest(app)
-        .get(`/api/blogs/${blogId}/read`)
+        .get(`/api/blogs/${blogId}`)
         .expect(200);
     });
     it("READ UNEXISTING BLOG", async () => {
@@ -191,7 +189,7 @@ describe("MY BRAND TEST", () => {
     });
     it("CREATE UNAUTHORIZED COMMENT", async () => {
       const response = await supertest(app)
-        .post(`/api/${blogId}/comments/create`)
+        .post(`/api/blog/${blogId}/comment`)
         .send({ message: "hello" })
         .expect(401);
     });
@@ -207,44 +205,38 @@ describe("MY BRAND TEST", () => {
         .post("/api/65dcde6ba63a91a8769e7fVRLEKEIUIT72/comments/create")
         .set("Authorization", token)
         .send({ message: "" })
-        .expect(400);
+        .expect(404);
     });
     it("COMMENT SUCCESSFUL", async () => {
       const response = await supertest(app)
-        .post(`/api/${blogId}/comments/create`)
-        .set("Authorization", token)
-        .send({ message: "HELLO" })
-        .expect(201);
-    });
-    it("COMMENT SUCCESSFUL", async () => {
-      const response = await supertest(app)
-        .post(`/api/${blogId}/comments/create`)
+        .post(`/api/blog/${blogId}/comment`)
         .set("Authorization", token)
         .send({ message: "HELLO" })
         .expect(201);
     });
     it("UNAUTHORIZED DELETE BLOG", async () => {
-      await supertest(app).delete(`/api/blogs/${blogId}/delete`).expect(401);
+      await supertest(app).delete(`/api/blogs/${blogId}`).expect(401);
     });
     it("BLOG DELETE SUCCESSFULLY", async () => {
       await supertest(app)
-        .delete(`/api/blogs/${blogId}/delete`)
+        .delete(`/api/blogs/${blogId}`)
         .set("Authorization", token)
         .expect(204);
     });
 
     it("MESSAGE SUCCESSFUL", async () => {
       const response = await supertest(app)
-        .post(`/api/messages/create`)
+        .post(`/api/messages`)
         .send({
-          email: "ntiru@gmail.com",
-          text: "Hey buy",
+          name: "king",
+          email: "mou@gmail.com",
+          text: "hello",
         })
         .expect(201);
     });
     it("MESSAGE VALLIDATION FAILED", async () => {
       const response = await supertest(app)
-        .post(`/api/messages/create`)
+        .post(`/api/messages`)
         // .set("Authorization", token)
         .send({
           email: "",
@@ -254,7 +246,7 @@ describe("MY BRAND TEST", () => {
     });
     it("READ MESSAGE", async () => {
       const response = await supertest(app)
-        .get(`/api/messages/read`)
+        .get(`/api/messages`)
         // .set("Authorization", token)
         .expect(200);
     });

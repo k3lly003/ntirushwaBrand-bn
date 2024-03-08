@@ -13,6 +13,7 @@ const errorHandler: ErrorRequestHandler = (
     success: false,
     data: null,
   });
+  console.log(error);
 };
 
 export default errorHandler;

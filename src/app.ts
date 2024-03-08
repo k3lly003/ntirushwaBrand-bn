@@ -9,30 +9,41 @@ import swaggerUi from "swagger-ui-express";
 import * as swagger from "../docs/swagger.json";
 import passport from "passport";
 import "../src/middleware/auth";
+import cors from "cors";
 
 require("../passport-config")(passport);
 
 export const app = express();
 
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
-//Route for auth
-app.use("/api/auth", AuthRoutes);
+// AUTH ROUTES
+app.use("/api", AuthRoutes);
 
-//Routes for creating blogs
+// BLOG ROUTES
 app.use("/api/blogs", publicBlogRoutes);
 app.use("/api/blogs", protectedBlogRoutes);
 
-//Route for querry
+// MESSAGE ROUTES
 app.use("/api/messages", MessageRouter);
 
-app.use("/api/:blog_id/comments", CommentRouter);
+// COMMENTS ROUTES
+
+app.use("/api/blog", CommentRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swagger));
 
-app.all("*", ()=>{
-    throw new Error('Route Not Found');
-});
+// app.all("*", () => {
+//   throw new Error("Route Not Found");
+// });
 
 app.use(errorHandler);
 
