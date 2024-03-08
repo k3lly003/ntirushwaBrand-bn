@@ -41,9 +41,9 @@ app.use("/api/blog", CommentRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swagger));
 
-app.all("*", () => {
-  throw new Error("Route Not Found");
-});
+// app.all("*", () => {
+//   throw new Error("Route Not Found");
+// });
 
 app.use(errorHandler);
 

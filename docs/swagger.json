@@ -347,8 +347,9 @@
             "name": "body",
             "schema": {
               "example": {
-                "email": "ntiru@gmail.com",
-                "text": "Hey buy"
+                "name": "king",
+                "email": "mou@gmail.com",
+                "text": "hello"
               },
               "required": true
             }
