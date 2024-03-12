@@ -30,7 +30,6 @@ BlogRouter.post(
 
 BlogRouter.patch(
   "/:blog_id",
-  upload.fields([{ name: "image", maxCount: 1 }]),
   passport.authenticate("jwt", { session: false }),
   checkIsUserAdmin,
   updateBlog

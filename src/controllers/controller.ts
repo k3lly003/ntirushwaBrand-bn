@@ -108,28 +108,15 @@ export const updateBlog = async (req: Request, res: Response) => {
     const post = await Blogs.findOne({ _id: req.params.blog_id });
 
     if (post) {
-      if ("image" in req.files!) {
-        const uploadedBlogImage = req.files.image[0];
-        const base64image = dataUri(uploadedBlogImage);
-        const cloudImg = await uploadFiles(
-          base64image.content,
-          { folder: "blogImages" },
-          function (err, result) {
-            if (err) {
-              console.log("this is Cloudinary error", err);
-              return res.json(err);
-            }
-            console.log("this is Cloudinary result", result);
-            return result;
-          }
-        );
-        post.image = cloudImg.url;
-      } else {
-        return res.status(400).json({ msg: "You must have an image" });
+      if (req.body.title) {
+        post.title = req.body.title;
       }
-      post.title = req.body.title;
-      post.description = req.body.description;
-      post.content = req.body.content;
+      if (req.body.description) {
+        post.description = req.body.description;
+      }
+      if (req.body.content) {
+        post.content = req.body.content;
+      }
 
       await post.save();
       res.send(post);
@@ -146,7 +133,7 @@ export const deleteBlog = async (
   next: NextFunction
 ) => {
   try {
-    console.log("THIS IS THRE ID", req.params.blog_id);
+    console.log("THIS IS THE ID", req.params.blog_id);
     const result = await Blogs.deleteOne({ _id: req.params.blog_id });
     console.log(result);
     if (result.deletedCount === 1) {
@@ -158,7 +145,6 @@ export const deleteBlog = async (
         .json({ msg: "blog failed to be deleted try again later" });
     }
   } catch (error) {
-    return next(error);
-    // res.status(404).send({ error: "The blog does not exist!" });
+    res.status(404).send({ error: "The blog does not exist!" });
   }
 };

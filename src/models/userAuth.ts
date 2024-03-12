@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import { ObjectId } from "mongodb";
 import bcrypt from "bcrypt";
+// import {next: NextFunction} from 'express'
 
 export interface User extends Document {
   _id: ObjectId;

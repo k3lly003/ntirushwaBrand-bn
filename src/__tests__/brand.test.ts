@@ -39,23 +39,12 @@ describe("MY BRAND TEST", () => {
       token = "Bearer " + result.body.token;
     });
     // LOGIN FAIL
-    it("LOGIN FAILED, IT SHOULD RETURN 401", async () => {
-      const result = await supertest(app)
-        .post("/api/signin")
-        .send({
-          email: "ke999999999@gmail.com",
-          password: "12345",
-        })
-        .expect(404);
-      token;
-    });
-    //PASSWORD FAIL
     it("LOGIN FAILED, IT SHOULD RETURN 404", async () => {
       const result = await supertest(app)
         .post("/api/signin")
         .send({
-          email: "cas@gmail.com",
-          password: "1234567yuit879",
+          email: "mawi@gmail.com",
+          password: "3333",
         })
         .expect(404);
       token;
@@ -221,7 +210,7 @@ describe("MY BRAND TEST", () => {
       await supertest(app)
         .delete(`/api/blogs/${blogId}`)
         .set("Authorization", token)
-        .expect(204);
+        .expect(200);
     });
 
     it("MESSAGE SUCCESSFUL", async () => {

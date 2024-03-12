@@ -377,7 +377,7 @@
         }
       }
     },
-    "/api/blog/{commentId}/comment": {
+    "/api/blog/{blog_id}/comment": {
       "post": {
         "summary": "create a comment by ID",
         "description": "This endpoint is used to create a comment",

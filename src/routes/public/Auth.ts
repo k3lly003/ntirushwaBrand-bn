@@ -47,7 +47,12 @@ Router.post("/signup", async (req: Request, res: Response, next) => {
     const { id, userType, email } = newUser;
     const token = jwt.sign({ id, userType, email }, process.env.JWT_SECRET);
     token;
-    return res.status(201).json({ msg: "account created successfully", token });
+    return res.status(201).json({
+      status: 201,
+      msg: "account created successfully",
+      token,
+      user: newUser,
+    });
   }
   return res.status(400).json({ msg: "Email already in use" });
 });
@@ -77,7 +82,12 @@ Router.post("/signin", async (req: Request, res: Response, next) => {
     const { id, userType, email } = user;
     const token = jwt.sign({ id, userType, email }, process.env.JWT_SECRET!);
     // Send back Response
-    return res.status(200).json({ msg: "Logged In Successfully", token });
+    return res.status(200).json({
+      status: 200,
+      msg: "Logged In Successfully",
+      token,
+      user,
+    });
   } catch (err) {
     return next(err);
   }
