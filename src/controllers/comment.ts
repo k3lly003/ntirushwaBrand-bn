@@ -14,6 +14,7 @@ declare global {
 
 export const createComment = async (req: Request, res: Response) => {
   try {
+    console.log("ON LINE 17", req.params.blog_id);
     const blog = await Blogs.findById(req.params.blog_id);
     if (!blog) return res.status(404).json({ msg: "Blog not found" });
     const newComment = await Comment.create({

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">53.33% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/30</span>
+                <span class='fraction'>6/30</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">15.38% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/26</span>
+                <span class='fraction'>4/26</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -144,18 +144,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -163,7 +163,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -209,19 +209,19 @@ declare global {
   }
 }
 &nbsp;
-export const createComment = async (req: Request, res: Response) =&gt; {
-  try {
-    const blog = await Blogs.findById(req.params.blog_id);
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!blog) <span class="cstat-no" title="statement not covered" >return res.status(404).json({ msg: "Blog not found" });</span>
-    const newComment = await Comment.create({
+export const createComment = <span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const blog = <span class="cstat-no" title="statement not covered" >await Blogs.findById(req.params.blog_id);</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!blog) <span class="cstat-no" title="statement not covered" >return res.status(404).json({ msg: "Blog not found" });</span></span>
+    const newComment = <span class="cstat-no" title="statement not covered" >await Comment.create({</span>
       blogId: blog._id,
       message: req.body.message,
       author: req.userId,
     });
-    blog.comments.push(newComment._id);
-    await blog.save();
-    await newComment.save();
-    const updateBlog = await Blogs.findById(blog._id).populate({
+<span class="cstat-no" title="statement not covered" >    blog.comments.push(newComment._id);</span>
+<span class="cstat-no" title="statement not covered" >    await blog.save();</span>
+<span class="cstat-no" title="statement not covered" >    await newComment.save();</span>
+    const updateBlog = <span class="cstat-no" title="statement not covered" >await Blogs.findById(blog._id).populate({</span>
       path: "comments",
       select: "message",
       populate: {
@@ -229,7 +229,7 @@ export const createComment = async (req: Request, res: Response) =&gt; {
         select: "first_name second_name",
       },
     });
-    return res
+<span class="cstat-no" title="statement not covered" >    return res</span>
       .status(201)
       .json({ msg: "Comment created successfull", updateBlog });
   } catch (err) {
@@ -268,7 +268,7 @@ export const updateComment = <span class="fstat-no" title="function not covered"
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-12T12:01:05.408Z
+                at 2024-03-12T17:08:25.352Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

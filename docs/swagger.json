@@ -58,11 +58,21 @@
         },
         "content": {
           "type": "string",
-          "description": "atleast 300 minimun characters "
+          "description": "atleast 50 minimun characters "
+        }
+      }
+    },
+    "Comment": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "comment to be added on the blog"
         }
       }
     }
   },
+
   "tags": [
     {
       "name": "Auth",
@@ -74,7 +84,7 @@
     },
     {
       "name": "Comments",
-      "description": "Comments APIs"
+      "description": "Comments API"
     },
     {
       "name": "Messages",
@@ -336,6 +346,39 @@
         }
       }
     },
+    "/api/blog/{blog_id}/comment": {
+      "post": {
+        "summary": "Create a comment",
+        "description": "This endpoint is used to create a comment",
+        "tags": ["Comments"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "blog_id",
+            "description": "ID of the blog to add a comment",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "example": {
+                "message": "king"
+              },
+              "required": true
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Message created"
+          }
+        }
+      }
+    },
     "/api/messages": {
       "post": {
         "summary": "Create a new message",
@@ -373,116 +416,6 @@
         "responses": {
           "200": {
             "description": "Successful response"
-          }
-        }
-      }
-    },
-    "/api/blog/{blog_id}/comment": {
-      "post": {
-        "summary": "create a comment by ID",
-        "description": "This endpoint is used to create a comment",
-        "tags": ["Comments"],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "commentId",
-            "in": "path",
-            "description": "ID of the comment to update",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "formData",
-            "name": "message",
-            "type": "string",
-            "required": false,
-            "description": "Your comment"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "required": ["description"]
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Comment updated"
-          },
-          "404": {
-            "description": "Comment not found"
-          }
-        }
-      },
-      "patch": {
-        "summary": "Update a comment by ID",
-        "description": "This endpoint is used to update a single comment by its ID",
-        "tags": ["Comments"],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "commentId",
-            "in": "path",
-            "description": "ID of the comment to update",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "formData",
-            "name": "message",
-            "type": "string",
-            "required": false,
-            "description": "Your comment"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "required": ["description"]
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Comment updated"
-          },
-          "404": {
-            "description": "Comment not found"
           }
         }
       }
