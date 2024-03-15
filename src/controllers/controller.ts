@@ -106,7 +106,7 @@ export const handleLikeBlog = async (
 export const updateBlog = async (req: Request, res: Response) => {
   try {
     const post = await Blogs.findOne({ _id: req.params.blog_id });
-
+    console.log("WE WANT THIS", req.body.title);
     if (post) {
       if (req.body.title) {
         post.title = req.body.title;
