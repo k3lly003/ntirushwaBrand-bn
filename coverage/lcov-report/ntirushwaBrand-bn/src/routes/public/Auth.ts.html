@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.72% </span>
+                <span class="strong">95.34% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>36/43</span>
+                <span class='fraction'>41/43</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.05% </span>
+                <span class="strong">94.87% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>32/39</span>
+                <span class='fraction'>37/39</span>
             </div>
         
             
@@ -226,31 +226,31 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -327,26 +327,26 @@ Router.post("/signin", async (req: Request, res: Response, next) =&gt; {
         .status(404)
         .json({ msg: "Invalid Email /password combination!" });
     }
-    const user = <span class="cstat-no" title="statement not covered" >foundUser[0];</span>
+    const user = foundUser[0];
     // CHECK IF PASSWORD MATCH
-    let isMatch = <span class="cstat-no" title="statement not covered" >await user.comparePassword(req.body.password);</span>
+    let isMatch = await user.comparePassword(req.body.password);
     // Assign JWT Token NOW
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isMatch) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isMatch) {
 <span class="cstat-no" title="statement not covered" >      return res</span>
         .status(403)
         .json({ msg: "Invalid Email /password combination!" });
     }
-    const { id, userType, email } = <span class="cstat-no" title="statement not covered" >user;</span>
-    const token = <span class="cstat-no" title="statement not covered" >jwt.sign({ id, userType, email }, process.env.JWT_SECRET!);</span>
+    const { id, userType, email } = user;
+    const token = jwt.sign({ id, userType, email }, process.env.JWT_SECRET!);
     // Send back Response
-<span class="cstat-no" title="statement not covered" >    return res.status(200).json({</span>
+    return res.status(200).json({
       status: 200,
       msg: "Logged In Successfully",
       token,
       user,
     });
   } catch (err) {
-    return next(err);
+<span class="cstat-no" title="statement not covered" >    return next(err);</span>
   }
 });
 &nbsp;
@@ -358,7 +358,7 @@ export { Router as AuthRoutes };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-12T17:08:25.352Z
+                at 2024-06-24T21:49:38.970Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

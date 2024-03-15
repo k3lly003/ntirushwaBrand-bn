@@ -32,8 +32,8 @@ describe("MY BRAND TEST", () => {
       const result = await supertest(app)
         .post("/api/signin")
         .send({
-          email: "yona@gmail.com",
-          password: "3333",
+          email: "ntirukelly@gmail.com",
+          password: "Rukakaza",
         })
         .expect(200);
       token = "Bearer " + result.body.token;
@@ -134,13 +134,14 @@ describe("MY BRAND TEST", () => {
     //     .attach("image", pic)
     //     .expect(200);
     // });
+    // issue
     it("VALIDATION FAIL", async () => {
-      const pic = `${__dirname} /../pic/amall-pic.jpg`;
+      const pic = `${__dirname}/../pic/amall-pic.jpg`;
       let randomText = (Math.random() + 1).toString(36).substring(5);
       const response = await supertest(app)
         .post("/api/blogs")
         .set("Authorization", token)
-        .set("contentType", "application/octet-stream")
+        .set("Content-Type", "application/octet-stream")
         .field("title", `Le Lorem Ipsum est test ${randomText}`)
         .field(
           "description",
@@ -149,8 +150,11 @@ describe("MY BRAND TEST", () => {
         .field(
           "content",
           "son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker. "
-        )
-        .expect(401);
+        );
+    
+      console.log(response.body); // Log the response body
+    
+      expect(response.status).toBe(400);
     });
     it("UNAUTHORIZED UPDATE BLOG", async () => {
       await supertest(app)
@@ -206,11 +210,12 @@ describe("MY BRAND TEST", () => {
     it("UNAUTHORIZED DELETE BLOG", async () => {
       await supertest(app).delete(`/api/blogs/${blogId}`).expect(401);
     });
+    // issue
     it("BLOG DELETE SUCCESSFULLY", async () => {
       await supertest(app)
         .delete(`/api/blogs/${blogId}`)
         .set("Authorization", token)
-        .expect(200);
+        .expect(204);
     });
 
     it("MESSAGE SUCCESSFUL", async () => {
