@@ -30,6 +30,7 @@ export interface like {
   blogId: Types.ObjectId;
 }
 export interface Message {
+  name: string;
   email: string;
   text: string;
   createdAt: string;

@@ -9,6 +9,7 @@ export const createMessage = async (
 ) => {
   try {
     const Message = await message.create({
+      name: req.body.name,
       email: req.body.email,
       text: req.body.text,
     });

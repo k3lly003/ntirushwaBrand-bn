@@ -58,11 +58,21 @@
         },
         "content": {
           "type": "string",
-          "description": "atleast 300 minimun characters "
+          "description": "atleast 50 minimun characters "
+        }
+      }
+    },
+    "Comment": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "comment to be added on the blog"
         }
       }
     }
   },
+
   "tags": [
     {
       "name": "Auth",
@@ -74,7 +84,7 @@
     },
     {
       "name": "Comments",
-      "description": "Comments APIs"
+      "description": "Comments API"
     },
     {
       "name": "Messages",
@@ -83,7 +93,7 @@
   ],
   "schemes": ["http", "https"],
   "paths": {
-    "/api/auth/signup": {
+    "/api/signup": {
       "post": {
         "summary": "User Sign Up",
         "description": "Create a new user account",
@@ -110,7 +120,7 @@
         }
       }
     },
-    "/api/auth/signin": {
+    "/api/signin": {
       "post": {
         "summary": "User Sign In",
         "description": "Authenticate user and generate access token",
@@ -121,8 +131,8 @@
             "name": "body",
             "schema": {
               "example": {
-                "email": "josh@gmail.com",
-                "password": "mutama333"
+                "email": "yona@gmail.com",
+                "password": "3333"
               },
               "required": true
             }
@@ -138,7 +148,7 @@
         }
       }
     },
-    "/api/blogs/create": {
+    "/api/blogs": {
       "post": {
         "summary": "Create a new blog",
         "description": "This endpoint is used to create a new blog",
@@ -183,9 +193,7 @@
             "description": "Blog created"
           }
         }
-      }
-    },
-    "/api/blogs/read/all": {
+      },
       "get": {
         "summary": "Get all blogs",
         "description": "This endpoint is used to get all blogs",
@@ -200,7 +208,7 @@
         }
       }
     },
-    "/api/blogs/{blogId}/update": {
+    "/api/blogs/{blogId}": {
       "patch": {
         "summary": "Update a blog by ID",
         "description": "This endpoint is used to update a single blog by its ID",
@@ -283,10 +291,7 @@
             "description": "Blog not found"
           }
         }
-      }
-    },
-
-    "/api/blogs/{blogId}/read": {
+      },
       "get": {
         "summary": "Get a single blog by ID",
         "description": "This endpoint is used to get a single blog by its ID",
@@ -310,9 +315,7 @@
             "description": "Blog not found"
           }
         }
-      }
-    },
-    "/api/blogs/{blogId}/delete": {
+      },
       "delete": {
         "summary": "Delete a blog by ID",
         "description": "This endpoint is used to delete a single blog by its ID",
@@ -343,19 +346,27 @@
         }
       }
     },
-    "/api/messages/create": {
+    "/api/blog/{blog_id}/comment": {
       "post": {
-        "summary": "Create a new message",
-        "description": "This endpoint is used to create a new message",
-        "tags": ["Messages"],
+        "summary": "Create a comment",
+        "description": "This endpoint is used to create a comment",
+        "tags": ["Comments"],
         "parameters": [
+          {
+            "in": "path",
+            "name": "blog_id",
+            "description": "ID of the blog to add a comment",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "in": "body",
             "name": "body",
             "schema": {
               "example": {
-                "email": "ntiru@gmail.com",
-                "text": "Hey buy"
+                "message": "king"
               },
               "required": true
             }
@@ -368,7 +379,31 @@
         }
       }
     },
-    "/api/messages/read": {
+    "/api/messages": {
+      "post": {
+        "summary": "Create a new message",
+        "description": "This endpoint is used to create a new message",
+        "tags": ["Messages"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "example": {
+                "name": "king",
+                "email": "mou@gmail.com",
+                "text": "hello"
+              },
+              "required": true
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Message created"
+          }
+        }
+      },
       "get": {
         "summary": "Get all messages",
         "description": "This endpoint is used to get all messages",
@@ -385,130 +420,8 @@
         }
       }
     },
-    "/api/comments": {
-      "get": {
-        "summary": "Get all comments",
-        "description": "This endpoint is used to get all comments",
-        "tags": ["Comments"],
-        "responses": {
-          "200": {
-            "description": "Successful response"
-          }
-        }
-      },
-      "post": {
-        "summary": "Create a new comment",
-        "description": "This endpoint is used to create a new comment on a blog",
-        "tags": ["Comments"],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "blogId": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  }
-                },
-                "required": ["blogId", "description"]
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Comment created"
-          }
-        }
-      }
-    },
-    "/api/comments/{commentId}": {
-      "put": {
-        "summary": "Update a comment by ID",
-        "description": "This endpoint is used to update a single comment by its ID",
-        "tags": ["Comments"],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "commentId",
-            "in": "path",
-            "description": "ID of the comment to update",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  }
-                },
-                "required": ["description"]
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Comment updated"
-          },
-          "404": {
-            "description": "Comment not found"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete a comment by ID",
-        "description": "This endpoint is used to delete a single comment by its ID",
-        "tags": ["Comments"],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "commentId",
-            "in": "path",
-            "description": "ID of the comment to delete",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Comment deleted"
-          },
-          "404": {
-            "description": "Comment not found"
-          }
-        }
-      }
-    },
-    "/api/blogs/like/{blogId}": {
-      "post": {
+    "/api/blogs/{blog_id}/like": {
+      "patch": {
         "summary": "Like a blog",
         "description": "This endpoint is used to like a blog",
         "tags": ["Likes"],
@@ -519,7 +432,7 @@
         ],
         "parameters": [
           {
-            "name": "blogId",
+            "name": "blog_id",
             "in": "path",
             "description": "ID of the blog to like",
             "required": true,
@@ -531,37 +444,6 @@
         "responses": {
           "200": {
             "description": "Blog liked"
-          },
-          "404": {
-            "description": "Blog not found"
-          }
-        }
-      }
-    },
-    "/api/blogs/dislike/{blogId}": {
-      "post": {
-        "summary": "Dislike a blog",
-        "description": "This endpoint is used to dislike a blog",
-        "tags": ["Likes"],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "blogId",
-            "in": "path",
-            "description": "ID of the blog to dislike",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Blog disliked"
           },
           "404": {
             "description": "Blog not found"
